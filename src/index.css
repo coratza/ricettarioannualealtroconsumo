@@ -2,87 +2,133 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Source+Sans+3:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
+    /* Winter palette (default - Dec, Jan, Feb) */
+    --background: 210 25% 97%;
+    --foreground: 220 25% 12%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
+    --card-foreground: 220 25% 12%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 220 25% 12%;
+    --primary: 24 85% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 20% 92%;
+    --secondary-foreground: 220 25% 15%;
+    --muted: 210 15% 93%;
+    --muted-foreground: 220 10% 42%;
+    --accent: 30 70% 50%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 210 18% 87%;
+    --input: 210 18% 87%;
+    --ring: 24 85% 45%;
+    --radius: 0.75rem;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Seasonal colors */
+    --season-bg: 210 30% 95%;
+    --season-surface: 210 20% 98%;
+    --season-warm: 24 85% 45%;
+    --season-cool: 200 40% 55%;
+    --season-highlight: 35 90% 55%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
+    /* Boomer-friendly sizing */
+    --text-base: 1.125rem;
+    --text-lg: 1.25rem;
+    --text-xl: 1.5rem;
+    --text-2xl: 1.875rem;
+    --text-3xl: 2.25rem;
+    --leading: 1.7;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  /* Spring palette */
+  .season-spring {
+    --primary: 142 50% 38%;
+    --primary-foreground: 0 0% 100%;
+    --accent: 340 65% 55%;
+    --accent-foreground: 0 0% 100%;
+    --season-bg: 140 30% 96%;
+    --season-surface: 140 25% 98%;
+    --season-warm: 340 65% 55%;
+    --season-cool: 142 50% 38%;
+    --season-highlight: 90 55% 50%;
+    --ring: 142 50% 38%;
+  }
+
+  /* Summer palette */
+  .season-summer {
+    --primary: 35 90% 48%;
+    --primary-foreground: 0 0% 100%;
+    --accent: 15 85% 52%;
+    --accent-foreground: 0 0% 100%;
+    --season-bg: 45 50% 96%;
+    --season-surface: 45 40% 98%;
+    --season-warm: 15 85% 52%;
+    --season-cool: 195 60% 50%;
+    --season-highlight: 50 95% 55%;
+    --ring: 35 90% 48%;
+  }
+
+  /* Autumn palette */
+  .season-autumn {
+    --primary: 20 70% 42%;
+    --primary-foreground: 0 0% 100%;
+    --accent: 35 75% 48%;
+    --accent-foreground: 0 0% 100%;
+    --season-bg: 30 25% 95%;
+    --season-surface: 30 20% 97%;
+    --season-warm: 20 70% 42%;
+    --season-cool: 35 75% 48%;
+    --season-highlight: 45 80% 50%;
+    --ring: 20 70% 42%;
+  }
+
+  /* Winter palette (explicit) */
+  .season-winter {
+    --primary: 24 85% 45%;
+    --primary-foreground: 0 0% 100%;
+    --accent: 30 70% 50%;
+    --accent-foreground: 0 0% 100%;
+    --season-bg: 210 30% 95%;
+    --season-surface: 210 20% 98%;
+    --season-warm: 24 85% 45%;
+    --season-cool: 200 40% 55%;
+    --season-highlight: 35 90% 55%;
+    --ring: 24 85% 45%;
   }
 
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
-
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
-
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
+    --primary: 30 80% 55%;
+    --primary-foreground: 220 25% 10%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
-
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
+    --accent: 35 70% 50%;
+    --accent-foreground: 220 25% 10%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --ring: 30 80% 55%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -99,7 +145,106 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  html {
+    font-size: 18px;
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-foreground;
+    font-family: 'Source Sans 3', system-ui, sans-serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
   }
+
+  h1, h2, h3, h4 {
+    font-family: 'Merriweather', Georgia, serif;
+    line-height: 1.3;
+  }
+
+  /* Focus styles for accessibility */
+  :focus-visible {
+    outline: 3px solid hsl(var(--ring));
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .btn-boomer {
+    @apply min-h-[52px] px-6 py-3 text-lg font-semibold rounded-xl;
+    touch-action: manipulation;
+  }
+
+  .card-boomer {
+    @apply rounded-2xl shadow-md border-2 border-border/50 overflow-hidden transition-shadow;
+  }
+
+  .card-boomer:hover {
+    @apply shadow-lg;
+  }
+
+  .section-title {
+    @apply text-2xl md:text-3xl font-bold mb-4;
+    font-family: 'Merriweather', Georgia, serif;
+  }
+}
+
+/* Print styles */
+@media print {
+  body {
+    font-size: 14pt !important;
+    color: #000 !important;
+    background: #fff !important;
+    line-height: 1.5 !important;
+  }
+
+  header, nav, .bottom-nav, .no-print, button:not(.print-include) {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  .card-boomer {
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+    break-inside: avoid;
+  }
+
+  h1, h2, h3 {
+    color: #000 !important;
+  }
+
+  a {
+    text-decoration: none !important;
+    color: #000 !important;
+  }
+
+  .print-notes {
+    border: 1px dashed #999;
+    min-height: 100px;
+    margin-top: 1rem;
+    padding: 0.5rem;
+  }
+
+  .print-notes::before {
+    content: "Note: ";
+    font-style: italic;
+    color: #666;
+  }
+}
+
+.print-only {
+  display: none;
 }
