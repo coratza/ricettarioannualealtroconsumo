@@ -1,6 +1,6 @@
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Heart, Printer } from 'lucide-react';
-import { ingredients, CATEGORY_LABELS, MARKET_TIPS } from '@/data/ingredients';
+import { ingredients, CATEGORY_LABELS, MARKET_TIPS, getIngredientImageUrl } from '@/data/ingredients';
 import { recipes } from '@/data/recipes';
 import { useApp } from '@/contexts/AppContext';
 import { Layout } from '@/components/layout/Layout';
@@ -30,6 +30,10 @@ export default function IngredientDetail() {
         <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-boomer-base text-muted-foreground hover:text-foreground mb-4">
           <ArrowLeft size={20} /> Torna indietro
         </button>
+
+        <div className="mb-5 overflow-hidden rounded-2xl border border-border">
+          <img src={getIngredientImageUrl(ingredient)} alt={`Immagine AI di ${ingredient.name}`} className="h-56 w-full object-cover" />
+        </div>
 
         <div className="flex items-start justify-between gap-3 mb-4">
           <h1 className="text-boomer-2xl md:text-boomer-3xl font-display font-bold">{ingredient.name}</h1>

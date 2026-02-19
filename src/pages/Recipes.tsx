@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useApp } from '@/contexts/AppContext';
-import { getRecipesForMonth, searchRecipes, type Recipe, type Difficulty, type CookingMethod, type DietTag } from '@/data/recipes';
+import { getRecipesForMonth, searchRecipes, getRecipeBook, type Recipe, type Difficulty, type CookingMethod, type DietTag, type RecipeBook } from '@/data/recipes';
 import { Layout } from '@/components/layout/Layout';
 import { RecipeCard } from '@/components/RecipeCard';
 import { Input } from '@/components/ui/input';
@@ -19,6 +19,8 @@ export default function Recipes() {
   const [difficultyFilter, setDifficultyFilter] = useState<Difficulty | null>(null);
   const [methodFilter, setMethodFilter] = useState<CookingMethod | null>(null);
   const [dietFilter, setDietFilter] = useState<DietTag | null>(null);
+  const [bookFilter, setBookFilter] = useState<RecipeBook | null>(null);
+  const [meatOnly, setMeatOnly] = useState(false);
 
   const allRecipes = useMemo(() => getRecipesForMonth(currentMonth), [currentMonth]);
 
@@ -31,17 +33,21 @@ export default function Recipes() {
     if (difficultyFilter) items = items.filter(r => r.difficulty === difficultyFilter);
     if (methodFilter) items = items.filter(r => r.method === methodFilter);
     if (dietFilter) items = items.filter(r => r.dietTags.includes(dietFilter));
+    if (bookFilter) items = items.filter(r => getRecipeBook(r) === bookFilter);
+    if (meatOnly) items = items.filter(r => r.containsMeat);
     return items;
-  }, [search, allRecipes, ingredientFilter, timeFilter, difficultyFilter, methodFilter, dietFilter]);
+  }, [search, allRecipes, ingredientFilter, timeFilter, difficultyFilter, methodFilter, dietFilter, bookFilter, meatOnly]);
 
   const clearFilters = () => {
     setTimeFilter(null);
     setDifficultyFilter(null);
     setMethodFilter(null);
     setDietFilter(null);
+    setBookFilter(null);
+    setMeatOnly(false);
   };
 
-  const hasFilters = timeFilter || difficultyFilter || methodFilter || dietFilter;
+  const hasFilters = timeFilter || difficultyFilter || methodFilter || dietFilter || bookFilter || meatOnly;
 
   return (
     <Layout>
@@ -106,6 +112,23 @@ export default function Recipes() {
                 </Button>
               ))}
             </div>
+            {/* Ricettario */}
+            <div className="flex flex-wrap gap-2 items-center">
+              <span className="text-boomer-sm font-semibold w-20">📚 Stile:</span>
+              {([['tradizione', 'Tradizione'], ['stellata', 'Cucina stellata'], ['casa_veloce', 'Casa veloce']] as [RecipeBook, string][]).map(([b, label]) => (
+                <Button key={b} variant={bookFilter === b ? 'default' : 'outline'} size="sm" className="text-boomer-sm"
+                  onClick={() => setBookFilter(bookFilter === b ? null : b)}>
+                  {label}
+                </Button>
+              ))}
+            </div>
+            <div className="flex flex-wrap gap-2 items-center">
+              <span className="text-boomer-sm font-semibold w-20">🥩 Proteine:</span>
+              <Button variant={meatOnly ? 'default' : 'outline'} size="sm" className="text-boomer-sm" onClick={() => setMeatOnly(prev => !prev)}>
+                Solo ricette con carne
+              </Button>
+            </div>
+
             {hasFilters && (
               <Button variant="ghost" size="sm" onClick={clearFilters} className="text-boomer-sm text-muted-foreground">
                 ✕ Rimuovi filtri

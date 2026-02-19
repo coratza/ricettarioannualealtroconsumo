@@ -1,6 +1,7 @@
 export type Difficulty = 'facile' | 'media' | 'impegnativa';
 export type CookingMethod = 'padella' | 'forno' | 'pentola' | 'crudo';
 export type DietTag = 'vegetariana' | 'vegana' | 'senza_lattosio' | 'senza_glutine';
+export type RecipeBook = 'tradizione' | 'stellata' | 'casa_veloce';
 
 export interface RecipeStep {
   text: string;
@@ -23,6 +24,10 @@ export interface Recipe {
   isTraditional?: boolean;
   region?: string;
   culturalNote?: string;
+  recipeBook?: RecipeBook;
+  containsMeat?: boolean;
+  imageUrl?: string;
+  imagePrompt?: string;
 }
 
 export const recipes: Recipe[] = [
@@ -751,6 +756,28 @@ export function getTraditionalRecipes(monthNumber: number): Recipe[] {
   return getRecipesForMonth(monthNumber).filter(r => r.isTraditional);
 }
 
+export function getRecipeImageUrl(recipe: Recipe): string {
+  if (recipe.imageUrl) return recipe.imageUrl;
+  return `https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=1200&q=80&sig=${encodeURIComponent(recipe.id)}`;
+}
+
+export function getRecipeBook(recipe: Recipe): RecipeBook {
+  if (recipe.recipeBook) return recipe.recipeBook;
+  if (recipe.isTraditional) return 'tradizione';
+  if (recipe.time <= 20 && recipe.difficulty === 'facile') return 'casa_veloce';
+  return 'stellata';
+}
+
+export function getRecipesForBook(book: RecipeBook, monthNumber?: number): Recipe[] {
+  const pool = monthNumber ? getRecipesForMonth(monthNumber) : recipes;
+  return pool.filter(recipe => getRecipeBook(recipe) === book);
+}
+
+export function getMeatRecipes(monthNumber?: number): Recipe[] {
+  const pool = monthNumber ? getRecipesForMonth(monthNumber) : recipes;
+  return pool.filter(recipe => recipe.containsMeat);
+}
+
 export function searchRecipes(query: string): Recipe[] {
   const q = query.toLowerCase().trim();
   if (!q) return [];
@@ -776,3 +803,91 @@ export const QUICK_TAGS = [
   { id: 'leggero', label: '🥗 Leggero', filter: (r: Recipe) => r.tags.includes('leggero') },
   { id: 'comfort', label: '🍲 Comfort food', filter: (r: Recipe) => r.tags.includes('comfort') },
 ] as const;
+
+// --- Nuove ricette aggiunte per ampliare il ricettario ---
+recipes.push(
+  {
+    id: 'R201', title: 'Pollo al limone e rosmarino', months: [1,2,3,10,11,12], time: 30, servings: 4, difficulty: 'facile', method: 'padella',
+    ingredientIds: ['F004', 'H003'], pantryIngredients: ['petto di pollo', 'farina', 'olio extravergine', 'sale', 'pepe'],
+    steps: [
+      { text: 'Infarina leggermente il pollo e rosolalo in padella con olio.', duration: 8 },
+      { text: 'Aggiungi succo di limone, scorza e rosmarino.', duration: 2 },
+      { text: 'Copri e termina la cottura per 15-18 minuti.', duration: 18 },
+      { text: 'Regola di sale e servi caldo con il fondo di cottura.' }
+    ],
+    tags: ['cena', 'comfort'], dietTags: ['senza_lattosio'], recipeBook: 'casa_veloce', containsMeat: true,
+  },
+  {
+    id: 'R202', title: 'Tagliata di manzo con rucola e scaglie', months: [4,5,6,7,8,9], time: 20, servings: 4, difficulty: 'facile', method: 'padella',
+    ingredientIds: ['F084'], pantryIngredients: ['controfiletto di manzo', 'parmigiano', 'olio extravergine', 'sale grosso', 'aceto balsamico'],
+    steps: [
+      { text: 'Scalda bene la padella e cuoci il manzo 2-3 minuti per lato.', duration: 6 },
+      { text: 'Fai riposare la carne 5 minuti.', duration: 5 },
+      { text: 'Affetta, completa con rucola, scaglie e balsamico.' }
+    ],
+    tags: ['veloce', 'estate'], dietTags: ['senza_glutine'], recipeBook: 'casa_veloce', containsMeat: true,
+  },
+  {
+    id: 'R203', title: 'Vitello tonnato leggero', months: [5,6,7,8,9], time: 70, servings: 6, difficulty: 'media', method: 'pentola',
+    ingredientIds: ['F049'], pantryIngredients: ['girello di vitello', 'tonno sott’olio', 'capperi', 'maionese', 'limone', 'sale'],
+    steps: [
+      { text: 'Cuoci il girello in acqua aromatica con sedano e cipolla.', duration: 50 },
+      { text: 'Frulla tonno, capperi, limone e maionese per la salsa.', duration: 8 },
+      { text: 'Affetta il vitello freddo e nappa con la salsa.', duration: 10 }
+    ],
+    tags: ['freddo', 'tradizione'], dietTags: ['senza_glutine'], recipeBook: 'tradizione', containsMeat: true, isTraditional: true, region: 'Piemonte',
+  },
+  {
+    id: 'R204', title: 'Ragù bianco di cortile con salvia', months: [1,2,3,10,11,12], time: 55, servings: 4, difficulty: 'media', method: 'pentola',
+    ingredientIds: ['H004', 'F049'], pantryIngredients: ['carne macinata mista', 'sedano', 'carota', 'vino bianco', 'olio extravergine', 'sale'],
+    steps: [
+      { text: 'Prepara un soffritto con sedano, carota e cipolla.', duration: 8 },
+      { text: 'Aggiungi la carne e rosola bene.', duration: 10 },
+      { text: 'Sfuma con vino bianco e unisci la salvia.', duration: 5 },
+      { text: 'Cuoci dolcemente per 35 minuti e usa per condire pasta fresca.', duration: 35 }
+    ],
+    tags: ['tradizione', 'domenica'], dietTags: ['senza_lattosio'], recipeBook: 'tradizione', containsMeat: true, isTraditional: true, region: 'Centro Italia',
+  },
+  {
+    id: 'R205', title: 'Anatra all’arancia in riduzione', months: [11,12,1,2], time: 65, servings: 4, difficulty: 'impegnativa', method: 'padella',
+    ingredientIds: ['F001'], pantryIngredients: ['petto d’anatra', 'miele', 'aceto di vino', 'sale', 'pepe'],
+    steps: [
+      { text: 'Incidi la pelle dell’anatra e rosola dal lato grasso.', duration: 12 },
+      { text: 'Completa la cottura in forno caldo per 12-15 minuti.', duration: 15 },
+      { text: 'Riduci in padella succo d’arancia, miele e aceto.', duration: 8 },
+      { text: 'Affetta l’anatra e servi con la riduzione.' }
+    ],
+    tags: ['elegante', 'feste'], dietTags: ['senza_glutine', 'senza_lattosio'], recipeBook: 'stellata', containsMeat: true,
+  },
+  {
+    id: 'R206', title: 'Risotto ai funghi porcini mantecato al timo', months: [8,9,10], time: 35, servings: 4, difficulty: 'media', method: 'padella',
+    ingredientIds: ['F095', 'H005'], pantryIngredients: ['riso carnaroli', 'brodo vegetale', 'burro', 'parmigiano', 'vino bianco'],
+    steps: [
+      { text: 'Rosola i porcini con olio e timo.', duration: 6 },
+      { text: 'Tosta il riso e sfuma con vino bianco.', duration: 4 },
+      { text: 'Cuoci con brodo a mestoli per 16-18 minuti.', duration: 18 },
+      { text: 'Manteca con burro e parmigiano, poi servi.' }
+    ],
+    tags: ['autunno', 'cremoso'], dietTags: ['vegetariana', 'senza_glutine'], recipeBook: 'stellata',
+  },
+  {
+    id: 'R207', title: 'Pasta fredda mediterranea con tonno e pomodorini', months: [6,7,8,9], time: 18, servings: 4, difficulty: 'facile', method: 'pentola',
+    ingredientIds: ['F034', 'H002'], pantryIngredients: ['pasta corta', 'tonno sott’olio', 'olive nere', 'olio extravergine', 'sale'],
+    steps: [
+      { text: 'Cuoci la pasta e raffreddala sotto acqua fredda.', duration: 10 },
+      { text: 'Taglia pomodorini e trita il prezzemolo.', duration: 4 },
+      { text: 'Condisci con tonno, olive e olio.' }
+    ],
+    tags: ['veloce', 'estate'], dietTags: ['senza_lattosio'], recipeBook: 'casa_veloce',
+  },
+  {
+    id: 'R208', title: 'Tartare di salmone, finocchio e agrumi', months: [1,2,3,11,12], time: 20, servings: 4, difficulty: 'media', method: 'crudo',
+    ingredientIds: ['F001', 'F054'], pantryIngredients: ['salmone abbattuto', 'olio extravergine', 'sale', 'pepe rosa'],
+    steps: [
+      { text: 'Taglia il salmone a coltello in piccoli cubi.', duration: 8 },
+      { text: 'Affetta sottilmente il finocchio e pela vivo l’arancia.', duration: 6 },
+      { text: 'Condisci e impiatta con cura.' }
+    ],
+    tags: ['raffinato', 'leggero'], dietTags: ['senza_glutine', 'senza_lattosio'], recipeBook: 'stellata',
+  }
+);

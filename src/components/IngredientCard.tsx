@@ -1,6 +1,6 @@
 import { Heart, Printer } from 'lucide-react';
 import { useApp } from '@/contexts/AppContext';
-import { type Ingredient, CATEGORY_EMOJI } from '@/data/ingredients';
+import { type Ingredient, CATEGORY_EMOJI, getIngredientImageUrl } from '@/data/ingredients';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -17,9 +17,17 @@ export function IngredientCard({ ingredient, compact }: IngredientCardProps) {
 
   return (
     <div className="card-boomer bg-card flex flex-col">
-      {/* Header with emoji */}
-      <div className="bg-season-bg p-4 flex items-center justify-center text-5xl min-h-[80px]">
-        {CATEGORY_EMOJI[ingredient.category]}
+      {/* Header with image */}
+      <div className="relative bg-season-bg min-h-[120px]">
+        <img
+          src={getIngredientImageUrl(ingredient)}
+          alt={`Immagine AI di ${ingredient.name}`}
+          loading="lazy"
+          className="h-32 w-full object-cover"
+        />
+        <span className="absolute left-2 top-2 rounded-full bg-background/80 px-2 py-1 text-xl">
+          {CATEGORY_EMOJI[ingredient.category]}
+        </span>
       </div>
       <div className="p-4 flex flex-col gap-2 flex-1">
         <div className="flex items-start justify-between gap-2">
