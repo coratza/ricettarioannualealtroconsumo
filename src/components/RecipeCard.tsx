@@ -1,6 +1,6 @@
 import { Heart, Clock, Users, ChefHat, Printer } from 'lucide-react';
 import { useApp } from '@/contexts/AppContext';
-import { type Recipe } from '@/data/recipes';
+import { type Recipe, getRecipeBook, getRecipeImageUrl } from '@/data/recipes';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 
@@ -16,16 +16,25 @@ export function RecipeCard({ recipe, matchPercent }: RecipeCardProps) {
 
   const difficultyEmoji = recipe.difficulty === 'facile' ? '🟢' : recipe.difficulty === 'media' ? '🟡' : '🔴';
   const methodEmoji = { padella: '🍳', forno: '🔥', pentola: '🍲', crudo: '🥗' }[recipe.method];
+  const recipeBook = getRecipeBook(recipe);
 
   return (
     <Link to={`/ricette/${recipe.id}`} className="block">
       <div className="card-boomer bg-card hover:shadow-xl transition-all">
         {/* Header */}
-        <div className="bg-season-bg p-4 flex items-center justify-between">
-          <span className="text-4xl">{methodEmoji}</span>
-          <div className="flex items-center gap-2">
-            {isInSeason && <Badge variant="default" className="text-xs">🌿 Stagionale</Badge>}
-            {recipe.isTraditional && <Badge variant="secondary" className="text-xs">🏛️ Tradizione</Badge>}
+        <div className="relative">
+          <img
+            src={getRecipeImageUrl(recipe)}
+            alt={`Immagine AI di ${recipe.title}`}
+            loading="lazy"
+            className="h-40 w-full object-cover"
+          />
+          <div className="absolute inset-x-0 top-0 flex items-center justify-between bg-gradient-to-b from-black/45 to-transparent p-3">
+            <span className="text-3xl">{methodEmoji}</span>
+            <div className="flex items-center gap-2">
+              {isInSeason && <Badge variant="default" className="text-xs">🌿 Stagionale</Badge>}
+              {recipe.isTraditional && <Badge variant="secondary" className="text-xs">🏛️ Tradizione</Badge>}
+            </div>
           </div>
         </div>
         <div className="p-4 space-y-3">
@@ -54,6 +63,11 @@ export function RecipeCard({ recipe, matchPercent }: RecipeCardProps) {
               <span className="text-boomer-sm font-semibold">{matchPercent}%</span>
             </div>
           )}
+
+          <div className="flex flex-wrap gap-1">
+            <Badge variant="secondary" className="text-xs">📚 {recipeBook.replace('_', ' ')}</Badge>
+            {recipe.containsMeat && <Badge variant="secondary" className="text-xs">🥩 Carne</Badge>}
+          </div>
 
           {recipe.dietTags.length > 0 && (
             <div className="flex flex-wrap gap-1">

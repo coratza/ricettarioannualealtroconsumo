@@ -7,6 +7,8 @@ export interface Ingredient {
   months: number[];
   aliases: string[];
   tags: string[];
+  imageUrl?: string;
+  imagePrompt?: string;
 }
 
 export const CATEGORY_LABELS: Record<IngredientCategory, string> = {
@@ -60,6 +62,13 @@ export const MARKET_TIPS: Record<string, { choose: string[]; store: string[]; no
     noWaste: ['Trita la frutta secca avanzata per decorare dolci e insalate', 'Frulla con un po\' d\'acqua per ottenere latte vegetale', 'Usala nelle panature al posto del pangrattato'],
   },
 };
+
+
+
+export function getIngredientImageUrl(ingredient: Ingredient): string {
+  if (ingredient.imageUrl) return ingredient.imageUrl;
+  return `https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=800&q=80&sig=${encodeURIComponent(ingredient.id)}`;
+}
 
 export const ingredients: Ingredient[] = [
   { id: 'F001', name: 'Arancia', category: 'frutta', months: [1,2,3,4,11,12], aliases: ['arance'], tags: ['agrumi','spremuta'] },

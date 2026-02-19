@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Heart, Printer, ChefHat, BookOpen, Timer, Clock, Users, X } from 'lucide-react';
-import { recipes, type Recipe } from '@/data/recipes';
+import { recipes, type Recipe, getRecipeImageUrl, getRecipeBook } from '@/data/recipes';
 import { ingredients } from '@/data/ingredients';
 import { useApp } from '@/contexts/AppContext';
 import { Layout } from '@/components/layout/Layout';
@@ -165,6 +165,10 @@ export default function RecipeDetail() {
           <ArrowLeft size={20} /> Torna indietro
         </button>
 
+        <div className="mb-5 overflow-hidden rounded-2xl border border-border">
+          <img src={getRecipeImageUrl(recipe)} alt={`Immagine AI di ${recipe.title}`} className="h-56 w-full object-cover" />
+        </div>
+
         {/* Title */}
         <div className="flex items-start justify-between gap-3 mb-6">
           <h1 className="text-boomer-2xl md:text-boomer-3xl font-display font-bold">{recipe.title}</h1>
@@ -184,6 +188,8 @@ export default function RecipeDetail() {
             {recipe.difficulty === 'facile' ? '🟢' : '🟡'} {recipe.difficulty}
           </Badge>
           {recipe.isTraditional && <Badge className="text-boomer-sm py-1.5 px-3">🏛️ {recipe.region}</Badge>}
+          <Badge variant="secondary" className="text-boomer-sm py-1.5 px-3">📚 {getRecipeBook(recipe).replace('_', ' ')}</Badge>
+          {recipe.containsMeat && <Badge variant="secondary" className="text-boomer-sm py-1.5 px-3">🥩 Con carne</Badge>}
         </div>
 
         {recipe.culturalNote && (
