@@ -21,6 +21,7 @@ export default function IngredientDetail() {
   }
 
   const isFav = isFavoriteIngredient(ingredient.id);
+  const image = INGREDIENT_IMAGES[ingredient.id];
   const relatedRecipes = recipes.filter(r => r.ingredientIds.includes(ingredient.id));
   const tips = MARKET_TIPS[ingredient.category];
   const seasonMonths = ingredient.months.map(m => MONTH_NAMES[m - 1]);
