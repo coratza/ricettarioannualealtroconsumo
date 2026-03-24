@@ -166,6 +166,12 @@ export default function RecipeDetail() {
           <ArrowLeft size={20} /> Torna indietro
         </button>
 
+        {RECIPE_IMAGES[recipe.id] && (
+          <div className="rounded-2xl overflow-hidden mb-6 shadow-lg">
+            <img src={RECIPE_IMAGES[recipe.id]} alt={recipe.title} className="w-full h-56 sm:h-72 object-cover" />
+          </div>
+        )}
+
         {/* Title */}
         <div className="flex items-start justify-between gap-3 mb-6">
           <h1 className="text-boomer-2xl md:text-boomer-3xl font-display font-bold">{recipe.title}</h1>
