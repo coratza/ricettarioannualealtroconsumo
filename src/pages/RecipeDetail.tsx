@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Heart, Printer, ChefHat, BookOpen, Timer, Clock, Users, X } from 'lucide-react';
 import { recipes, type Recipe } from '@/data/recipes';
 import { ingredients } from '@/data/ingredients';
+import { RECIPE_IMAGES } from '@/data/images';
 import { useApp } from '@/contexts/AppContext';
 import { Layout } from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
