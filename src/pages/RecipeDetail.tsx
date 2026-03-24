@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Heart, Printer, ChefHat, BookOpen, Timer, Clock, Users, X } from 'lucide-react';
 import { recipes, type Recipe } from '@/data/recipes';
 import { ingredients } from '@/data/ingredients';
+import { RECIPE_IMAGES } from '@/data/images';
 import { useApp } from '@/contexts/AppContext';
 import { Layout } from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
@@ -164,6 +165,12 @@ export default function RecipeDetail() {
         <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-boomer-base text-muted-foreground hover:text-foreground mb-4">
           <ArrowLeft size={20} /> Torna indietro
         </button>
+
+        {RECIPE_IMAGES[recipe.id] && (
+          <div className="rounded-2xl overflow-hidden mb-6 shadow-lg">
+            <img src={RECIPE_IMAGES[recipe.id]} alt={recipe.title} className="w-full h-56 sm:h-72 object-cover" />
+          </div>
+        )}
 
         {/* Title */}
         <div className="flex items-start justify-between gap-3 mb-6">
