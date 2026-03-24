@@ -1,6 +1,7 @@
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, Heart, Printer } from 'lucide-react';
 import { ingredients, CATEGORY_LABELS, MARKET_TIPS } from '@/data/ingredients';
+import { INGREDIENT_IMAGES } from '@/data/images';
 import { recipes } from '@/data/recipes';
 import { useApp } from '@/contexts/AppContext';
 import { Layout } from '@/components/layout/Layout';
